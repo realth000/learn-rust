@@ -8,9 +8,14 @@ use std::io::{ErrorKind, Read};
 use std::net::IpAddr;
 use std::num::TryFromIntError;
 
+use crate::modules::lifecycle::learn_lifecycle;
+
+mod modules;
+
 fn main() {
-    learn_format_output();
+    learn_lifecycle();
     if false {
+        learn_format_output();
         learn_panic();
         learn_type_convert();
         learn_hash_map();
