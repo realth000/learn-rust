@@ -1,10 +1,18 @@
+extern crate core;
+
+use std::{fmt, io};
 use std::collections::HashMap;
-use std::fmt;
 use std::fmt::{Debug, Display, Formatter};
+use std::fs::File;
+use std::io::{ErrorKind, Read};
+use std::net::IpAddr;
+use std::num::TryFromIntError;
 
 fn main() {
-    learn_type_convert();
+    learn_format_output();
     if false {
+        learn_panic();
+        learn_type_convert();
         learn_hash_map();
         learn_vector();
         learn_new_type();
@@ -24,6 +32,140 @@ fn main() {
         learn_ownership();
         learn_function();
     }
+}
+
+// 格式化输出
+fn learn_format_output() {
+    println!("Hello");
+    println!("Hello, {}!", "world");
+    println!("The number is {}", 1);
+    println!("{:?}", (3, 4));
+    println!("{value} {} {value2}", "111", value2 = 44, value = 4);
+    println!("{} {}", 1, 2);
+    println!("{:04} {:02.2}", 42, 1.2345);
+    println!("{4} {3} {2} {1} {0}", 0, 1, 2, 3, 4);
+    // 输出占五格，不够的话在后面用空格补齐，超出的话全输出
+    println!("Hello {:5}123 {:5}", "x", "XXXXXXXxxxxx");
+    // 用第[1]个参数来指定输出宽度
+    println!("Hello {} {:2$}! {} {}", 4, "x", 5, 6);
+    // 用第[0]个参数来指定输出宽度，输出的字符串是第[1]个参数
+    println!("Hello {1:0$}!", 5, "x1");
+    // 用指定名称的参数来指定输出宽度
+    println!("Hello {:width$}! {width}", "x", width = 5);
+    println!("-------------------");
+    // 输出宽度5
+    println!("Hello {:5}!", 5);
+    // 用“+”输出正负号，用“-”输出负号
+    println!("Hello {:+5}! {:-5}! {:+5}! {:-5}!", 5, 5, -5, -5);
+    // 宽度为5，用0填充，负号也占一个宽度
+    println!("Hello {:05}!", -5);
+    println!("-------------------");
+    // 左对齐
+    println!("Hello {:<5}!", "x");
+    // 右对齐
+    println!("Hello {:>5}!", "x");
+    // 居中对齐
+    println!("Hello {:^5}!", "x");
+    // 对齐并使用指定符号填充
+    println!("Hello {:&^5}!", "x");
+    println!("-------------------");
+    let v = 3.1415926535897;
+    let s = v.to_string();
+    println!("{:.2}", v);
+    println!("{:+.2}", v);
+    println!("{:.0}", v);
+    println!("{:^1$}", v, 20);
+    println!("{:.3}", s);
+    println!("Hello {:.*}!", 3, s);
+    println!("-------------------");
+    // 二进制
+    println!("{:#b}!", 27);
+    // 八进制
+    println!("{:#o}!", 27);
+    // 小写十六进制
+    println!("{:#x}!", 27);
+    // 大写十六进制
+    println!("{:#X}!", 27);
+    // 不带进制前缀
+    println!("{:x}!", 27);
+    // 二进制，用0填充，宽度为10
+    println!("{:#010b}!", 27);
+    println!("-------------------");
+    // 指数 科学计数法？
+    println!("{:e}", 100000000);
+    println!("{:E}", 1000000);
+    println!("{:e}", 0.005232);
+    // 用空格填充10位宽度
+    println!("{:10e}", 0.005232);
+    println!("-------------------");
+    let v = vec![1, 2, 3];
+    println!("{:p}", v.as_ptr());
+    println!("{:16p}", v.as_ptr());
+}
+
+// panic
+fn learn_panic() {
+    let _home: IpAddr = "127.0.0.1".parse().unwrap();
+    // unwrap发生错误时直接panic
+    // let _bad_home: IpAddr = "1127.0.0.1".parse().unwrap();
+    let f = File::open("hello.txt");
+    let f = match f {
+        Ok(file) => file,
+        Err(e) => match e.kind() {
+            ErrorKind::NotFound => match File::create("hello.txt") {
+                Ok(fc) => fc,
+                Err(e) => panic!("hello.txt not found and failed to create: {:?}", e),
+            }
+            other_error => panic!("error opening hello.txt: {:?}", other_error),
+        },
+    };
+    let data = f.metadata().expect("failed to get metadata for file hello.txt");
+    println!("file data: {:?}", data.is_file());
+    println!("------------------- 传播Error");
+    fn read_user_name_from_file() -> Result<String, io::Error> {
+        let f = File::open("hello.txt");
+        let mut f = match f {
+            Ok(file) => file,
+            Err(e) => return Err(e),
+        };
+        let mut s = String::new();
+        match f.read_to_string(&mut s) {
+            Ok(_) => Ok(s),
+            Err(e) => Err(e),
+        }
+    }
+    let e = match read_user_name_from_file() {
+        Ok(un) => un,
+        Err(e) => {
+            println!("read user name failed: {}", e.to_string());
+            String::new()
+        }
+    };
+    println!("read user name success: {}", e);
+    println!("------------------- 传播Error 简便写法 ex");
+    fn read_user_name_from_file_ex() -> Result<String, io::Error> {
+        let mut f = File::open("hello.txt")?;
+        let mut s = String::new();
+        f.read_to_string(&mut s)?;
+        println!("read_user_name_from_file_ex(): {}", s);
+        Ok(s)
+    }
+    let s = read_user_name_from_file_ex();
+    println!("{}", s.unwrap());
+    println!("------------------- 传播Error 简便写法 ex_ex");
+    // Dart，Kotlin：我超
+    // GO：麻了
+    fn read_user_name_from_file_ex_ex() -> Result<String, io::Error> {
+        let mut s = String::new();
+        File::open("hello.txt")?.read_to_string(&mut s)?;
+        Ok(s)
+    }
+    let s = read_user_name_from_file_ex_ex();
+    println!("{}", s.unwrap());
+    fn last_char_of_first_line(text: &str) -> Option<char> {
+        text.lines().next()?.chars().last()
+    }
+    last_char_of_first_line("123");
 }
 
 // 类型转换
@@ -72,6 +214,28 @@ fn learn_type_convert() {
         *p2 += 1;
     }
     assert_eq!(values[1], 3);
+
+    // 使用TryInto转换类型
+    // let a: u8 = 10;
+    let b: u16 = 100;
+    // try_info然后match处理
+    let b_: u8 = match b.try_into() {
+        Ok(v) => v,
+        Err(e) => {
+            println!("ERROR! {}", e);
+            0
+        }
+    };
+    // try_info但是分两步处理
+    let b__: Result<u8, TryFromIntError> = b.try_into();
+    match b__ {
+        Ok(v) => println!("OK! {}", v),
+        Err(e) => println!("ERROR! {}", e),
+    }
+    println!("b_={}", b_);
+
+
+    // 强制类型转换
 }
 
 // HashMap
