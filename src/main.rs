@@ -8,13 +8,15 @@ use std::io::{ErrorKind, Read};
 use std::net::IpAddr;
 use std::num::TryFromIntError;
 
+use crate::modules::funtional::learn_functional;
 use crate::modules::lifecycle::learn_lifecycle;
 
 mod modules;
 
 fn main() {
-    learn_lifecycle();
+    learn_functional();
     if false {
+        learn_lifecycle();
         learn_format_output();
         learn_panic();
         learn_type_convert();

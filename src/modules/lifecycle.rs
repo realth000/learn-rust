@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 use std::fmt::Debug;
 use std::hash::Hash;
-use std::io::BufReader;
 use std::slice::from_raw_parts;
 use std::str::from_utf8_unchecked;
 
@@ -117,6 +116,12 @@ fn lifecycle_troubleshooting() {
             }
         }
     }
+    let mut hm = HashMap::new();
+    hm.insert("a", 1);
+    hm.insert("b", 2);
+    hm.insert("c", 3);
+    let s = get_default(&mut hm, "a");
+    println!("get_default result={}", s);
     println!("--------------------------");
     // 下方的f函数中的'a是凭空产生的生命周期，没有任何限制。
     // 实际编码过程中要尽量避免在操作裸指针或unsafe等操作时产生无界生命周期，
@@ -126,6 +131,9 @@ fn lifecycle_troubleshooting() {
             &*x
         }
     }
+    let a = 5;
+    #[allow(unused)]
+        let b = f(&a as *const i32);
     println!("--------------------------");
     #[derive(Debug)]
     struct Point {
@@ -160,7 +168,7 @@ fn lifecycle_troubleshooting() {
     // 对应的，impl里也需要更改生命周期声明为<'b, 'a:'b>
     impl<'b, 'a: 'b> Interface<'b, 'a> {
         pub fn noop(self) {
-            println!("Interface consumed");
+            println!("Interface consumed {}", self.manager.text);
         }
     }
     struct List<'a> {
@@ -217,5 +225,5 @@ fn lifecycle_troubleshooting() {
     }
     let i = 5;
     print_it(&i);
-    // print_it1(&i);
+    print_it1(i);
 }
