@@ -10,12 +10,15 @@ use std::num::TryFromIntError;
 
 use crate::modules::funtional::learn_functional;
 use crate::modules::lifecycle::learn_lifecycle;
+use crate::modules::smart_pointer::learn_smart_pointer;
+use crate::modules::types::learn_types;
 
 mod modules;
 
 fn main() {
-    learn_functional();
+    learn_smart_pointer();
     if false {
+        learn_functional();
         learn_lifecycle();
         learn_format_output();
         learn_panic();
@@ -38,6 +41,7 @@ fn main() {
         learn_borrow();
         learn_ownership();
         learn_function();
+        learn_types();
     }
 }
 

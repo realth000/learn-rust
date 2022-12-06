@@ -98,7 +98,7 @@ fn learn_iterator() {
     v1.iter().for_each(|x| println!("value is {}", x));
     // any 暂时没搞明白怎么用，后面没法调用或者collect收起来
     v1.iter().any(|x| x > &2);
-    let mut origin = 0;
+    let origin = 0;
     // collect!
     let v2: Vec<String> = v1.iter().map(|v| (v + 1).to_string()).collect();
     println!("result v2:{:?}", v2);
@@ -109,4 +109,32 @@ fn learn_iterator() {
     // zip and collect!
     let v3: HashMap<i32, String> = v1.into_iter().zip(v2.into_iter()).collect();
     println!("result v3:{:?}", v3);
+    println!("---------------");
+    // 为自定义类型实现Iterator特征
+    struct Counter {
+        count: u32,
+    }
+    impl Counter {
+        fn new() -> Counter {
+            Counter { count: 0 }
+        }
+    }
+    impl Iterator for Counter {
+        type Item = u32;
+        fn next(&mut self) -> Option<Self::Item> {
+            if self.count < 5 {
+                self.count += 1;
+                Some(self.count)
+            } else {
+                None
+            }
+        }
+    }
+    let counter = Counter::new();
+    println!("counter fold: {}", counter.into_iter().fold(0, |u, v| u + v));
+    println!("---------------");
+    let v = vec![1u64, 2, 3, 4, 5, 6];
+    for (i, v) in v.iter().enumerate() {
+        println!("第{}个值是{}", i, v);
+    }
 }
