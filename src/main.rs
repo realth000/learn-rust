@@ -1,25 +1,27 @@
 extern crate core;
 
+use std::{fmt, io};
 use std::collections::HashMap;
 use std::fmt::{Debug, Display, Formatter};
 use std::fs::File;
 use std::io::{ErrorKind, Read};
 use std::net::IpAddr;
 use std::num::TryFromIntError;
-use std::{fmt, io};
 
 use crate::modules::funtional::learn_functional;
 use crate::modules::lifecycle::learn_lifecycle;
 use crate::modules::reference::learn_weak_reference;
 use crate::modules::smart_pointer::learn_smart_pointer;
 use crate::modules::thread::learn_thread;
+use crate::modules::thread_message::learn_thread_message;
 use crate::modules::types::learn_types;
 
 mod modules;
 
 fn main() {
-    learn_thread();
+    learn_thread_message();
     if false {
+        learn_thread();
         learn_weak_reference();
         learn_smart_pointer();
         learn_functional();
@@ -584,15 +586,15 @@ fn learn_trait() {
             author: "a".to_string(),
             content: "c".to_string(),
         }
-        .summarize()
+            .summarize()
     );
     println!(
         "{}",
         Weibo {
             username: "u".to_string(),
-            content: "c".to_string()
+            content: "c".to_string(),
         }
-        .summarize()
+            .summarize()
     );
     // Killer
     pub fn notify(item: &impl Summary) {
@@ -642,7 +644,7 @@ fn learn_trait_2() {
 
 // Generics
 fn learn_generics() {
-    fn add<T: std::ops::Add<Output = T>>(a: T, b: T) -> T {
+    fn add<T: std::ops::Add<Output=T>>(a: T, b: T) -> T {
         a + b
     }
     println!("ADD i8: {}", add(2i8, 3i8));
