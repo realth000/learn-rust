@@ -1,24 +1,26 @@
 extern crate core;
 
-use std::{fmt, io};
 use std::collections::HashMap;
 use std::fmt::{Debug, Display, Formatter};
 use std::fs::File;
 use std::io::{ErrorKind, Read};
 use std::net::IpAddr;
 use std::num::TryFromIntError;
+use std::{fmt, io};
 
 use crate::modules::funtional::learn_functional;
 use crate::modules::lifecycle::learn_lifecycle;
-use crate::modules::smart_pointer::learn_smart_pointer;
-use crate::modules::types::learn_types;
 use crate::modules::reference::learn_weak_reference;
+use crate::modules::smart_pointer::learn_smart_pointer;
+use crate::modules::thread::learn_thread;
+use crate::modules::types::learn_types;
 
 mod modules;
 
 fn main() {
-    learn_weak_reference();
+    learn_thread();
     if false {
+        learn_weak_reference();
         learn_smart_pointer();
         learn_functional();
         learn_lifecycle();
@@ -128,11 +130,13 @@ fn learn_panic() {
             ErrorKind::NotFound => match File::create("hello.txt") {
                 Ok(fc) => fc,
                 Err(e) => panic!("hello.txt not found and failed to create: {:?}", e),
-            }
+            },
             other_error => panic!("error opening hello.txt: {:?}", other_error),
         },
     };
-    let data = f.metadata().expect("failed to get metadata for file hello.txt");
+    let data = f
+        .metadata()
+        .expect("failed to get metadata for file hello.txt");
     println!("file data: {:?}", data.is_file());
     println!("------------------- 传播Error");
     fn read_user_name_from_file() -> Result<String, io::Error> {
@@ -247,7 +251,6 @@ fn learn_type_convert() {
     }
     println!("b_={}", b_);
 
-
     // 强制类型转换
 }
 
@@ -270,7 +273,11 @@ fn learn_hash_map() {
     scores.insert("Red", 10);
     scores.insert("Blue", 20);
     let score = scores.get("Red");
-    println!("获取scores元素key=Red:{:?}, is_none={}", score, score.is_none());
+    println!(
+        "获取scores元素key=Red:{:?}, is_none={}",
+        score,
+        score.is_none()
+    );
 
     // 遍历查询HashMap
     for (key, value) in &scores {
@@ -407,10 +414,7 @@ fn learn_trait_implement() {
         }
     }
     impl OutlinePrint for Point {}
-    let p = Point {
-        x: 1,
-        y: 2,
-    };
+    let p = Point { x: 1, y: 2 };
     p.outline_print();
 }
 
@@ -499,7 +503,10 @@ fn learn_trait_object() {
     }
     impl Draw for Button {
         fn draw(&self) {
-            println!("Draw Button width={}, height={}, label={}", self.width, self.height, self.label);
+            println!(
+                "Draw Button width={}, height={}, label={}",
+                self.width, self.height, self.label
+            );
         }
     }
     pub struct SelectBox {
@@ -509,7 +516,10 @@ fn learn_trait_object() {
     }
     impl Draw for SelectBox {
         fn draw(&self) {
-            println!("Draw Button width={}, height={}, label={}", self.width, self.height, self.label);
+            println!(
+                "Draw Button width={}, height={}, label={}",
+                self.width, self.height, self.label
+            );
         }
     }
     // pub struct Screen {
@@ -567,12 +577,23 @@ fn learn_trait() {
             format!("{} published {}", self.username, self.content)
         }
     }
-    println!("{}", Post {
-        title: "t".to_string(),
-        author: "a".to_string(),
-        content: "c".to_string(),
-    }.summarize());
-    println!("{}", Weibo { username: "u".to_string(), content: "c".to_string() }.summarize());
+    println!(
+        "{}",
+        Post {
+            title: "t".to_string(),
+            author: "a".to_string(),
+            content: "c".to_string(),
+        }
+        .summarize()
+    );
+    println!(
+        "{}",
+        Weibo {
+            username: "u".to_string(),
+            content: "c".to_string()
+        }
+        .summarize()
+    );
     // Killer
     pub fn notify(item: &impl Summary) {
         println!("NOTIFY: {}", item.summarize());
@@ -586,7 +607,10 @@ fn learn_trait() {
     // {
     //     1
     // }
-    let w = Weibo { username: "".to_string(), content: "".to_string() };
+    let w = Weibo {
+        username: "".to_string(),
+        content: "".to_string(),
+    };
     notify(&w);
 }
 
@@ -599,10 +623,7 @@ fn learn_trait_2() {
 
     impl<T, U> Pair<T, U> {
         fn new(x: T, y: U) -> Self {
-            Self {
-                x,
-                y,
-            }
+            Self { x, y }
         }
     }
 
@@ -613,10 +634,7 @@ fn learn_trait_2() {
         }
     }
 
-    let p = Pair::<i32, i32> {
-        x: 1,
-        y: 2,
-    };
+    let p = Pair::<i32, i32> { x: 1, y: 2 };
     p.cmd_display();
     let q = Pair::new(1, 2);
     q.cmd_display();
@@ -624,7 +642,7 @@ fn learn_trait_2() {
 
 // Generics
 fn learn_generics() {
-    fn add<T: std::ops::Add<Output=T>>(a: T, b: T) -> T {
+    fn add<T: std::ops::Add<Output = T>>(a: T, b: T) -> T {
         a + b
     }
     println!("ADD i8: {}", add(2i8, 3i8));
@@ -647,11 +665,7 @@ fn learn_struct_method() {
     }
     impl Circle {
         fn new(x: f64, y: f64, radius: f64) -> Circle {
-            Circle {
-                x,
-                y,
-                radius,
-            }
+            Circle { x, y, radius }
         }
         fn info(&self) {
             println!("INFO: x={}, y={}, radius={}", self.x, self.y, self.radius);
@@ -687,7 +701,11 @@ fn learn_enum() {
     let v = vec![MyEnum::Foo, MyEnum::Bar, MyEnum::Foo];
     let _ = v.iter().filter(|x| matches!(x, MyEnum::Foo));
     MyEnum::call();
-    println!("plus_one_result: {:?} {:?}", plus_one(Some(5)), plus_one(None));
+    println!(
+        "plus_one_result: {:?} {:?}",
+        plus_one(Some(5)),
+        plus_one(None)
+    );
 }
 
 // Complex Type
@@ -709,7 +727,6 @@ fn learn_complex_type() {
     open(&mut f1);
     // read(&mut f1, &mut vec![]);
     close(&mut f1);
-
 
     // S1有两个匿名字段，分别用self.0和self.1访问
     #[derive(Debug)]

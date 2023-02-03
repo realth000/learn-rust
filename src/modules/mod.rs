@@ -1,6 +1,6 @@
-pub mod lifecycle;
 pub mod funtional;
-pub mod types;
-pub mod smart_pointer;
+pub mod lifecycle;
 pub mod reference;
-
+pub mod smart_pointer;
+pub mod thread;
+pub mod types;
