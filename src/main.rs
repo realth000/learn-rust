@@ -12,12 +12,14 @@ use crate::modules::funtional::learn_functional;
 use crate::modules::lifecycle::learn_lifecycle;
 use crate::modules::smart_pointer::learn_smart_pointer;
 use crate::modules::types::learn_types;
+use crate::modules::reference::learn_weak_reference;
 
 mod modules;
 
 fn main() {
-    learn_smart_pointer();
+    learn_weak_reference();
     if false {
+        learn_smart_pointer();
         learn_functional();
         learn_lifecycle();
         learn_format_output();
