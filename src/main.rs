@@ -16,13 +16,15 @@ use crate::modules::thread::learn_thread;
 use crate::modules::thread_atomic::learn_thread_atomic;
 use crate::modules::thread_lock::learn_thread_lock;
 use crate::modules::thread_message::learn_thread_message;
+use crate::modules::thread_send_sync::learn_thread_send_sync;
 use crate::modules::types::learn_types;
 
 mod modules;
 
 fn main() {
-    learn_thread_atomic();
+    learn_thread_send_sync();
     if false {
+        learn_thread_atomic();
         learn_thread_lock();
         learn_thread_message();
         learn_thread();
