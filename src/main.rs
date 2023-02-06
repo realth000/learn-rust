@@ -13,6 +13,7 @@ use crate::modules::lifecycle::learn_lifecycle;
 use crate::modules::reference::learn_weak_reference;
 use crate::modules::smart_pointer::learn_smart_pointer;
 use crate::modules::thread::learn_thread;
+use crate::modules::thread_atomic::learn_thread_atomic;
 use crate::modules::thread_lock::learn_thread_lock;
 use crate::modules::thread_message::learn_thread_message;
 use crate::modules::types::learn_types;
@@ -20,8 +21,9 @@ use crate::modules::types::learn_types;
 mod modules;
 
 fn main() {
-    learn_thread_lock();
+    learn_thread_atomic();
     if false {
+        learn_thread_lock();
         learn_thread_message();
         learn_thread();
         learn_weak_reference();

@@ -3,6 +3,7 @@ pub mod lifecycle;
 pub mod reference;
 pub mod smart_pointer;
 pub mod thread;
+pub mod thread_atomic;
 pub mod thread_message;
 pub mod thread_lock;
 pub mod types;
