@@ -1,3 +1,4 @@
+pub mod error_handle;
 pub mod funtional;
 pub mod lifecycle;
 pub mod reference;

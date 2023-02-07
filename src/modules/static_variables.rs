@@ -1,5 +1,4 @@
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::thread;
 
 /*
  全局静态常量，在编译期初始化。

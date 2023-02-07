@@ -6,6 +6,7 @@ use std::io::{ErrorKind, Read};
 use std::net::IpAddr;
 use std::num::TryFromIntError;
 
+use crate::modules::error_handle::learn_error_handle;
 use crate::modules::funtional::learn_functional;
 use crate::modules::lifecycle::learn_lifecycle;
 use crate::modules::reference::learn_weak_reference;
@@ -21,8 +22,9 @@ use crate::modules::types::learn_types;
 mod modules;
 
 fn main() {
-    learn_static_variables();
+    learn_error_handle();
     if false {
+        learn_static_variables();
         learn_thread_send_sync();
         learn_thread_atomic();
         learn_thread_lock();
