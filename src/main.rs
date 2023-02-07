@@ -1,5 +1,3 @@
-extern crate core;
-
 use std::{fmt, io};
 use std::collections::HashMap;
 use std::fmt::{Debug, Display, Formatter};
@@ -12,6 +10,7 @@ use crate::modules::funtional::learn_functional;
 use crate::modules::lifecycle::learn_lifecycle;
 use crate::modules::reference::learn_weak_reference;
 use crate::modules::smart_pointer::learn_smart_pointer;
+use crate::modules::static_variables::learn_static_variables;
 use crate::modules::thread::learn_thread;
 use crate::modules::thread_atomic::learn_thread_atomic;
 use crate::modules::thread_lock::learn_thread_lock;
@@ -22,8 +21,9 @@ use crate::modules::types::learn_types;
 mod modules;
 
 fn main() {
-    learn_thread_send_sync();
+    learn_static_variables();
     if false {
+        learn_thread_send_sync();
         learn_thread_atomic();
         learn_thread_lock();
         learn_thread_message();
