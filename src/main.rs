@@ -6,9 +6,11 @@ use std::net::IpAddr;
 use std::num::TryFromIntError;
 use std::{fmt, io};
 
+use crate::modules::asynchronous::learn_asynchronous;
 use crate::modules::error_handle::learn_error_handle;
 use crate::modules::funtional::learn_functional;
 use crate::modules::lifecycle::learn_lifecycle;
+use crate::modules::marco::learn_marco;
 use crate::modules::reference::learn_weak_reference;
 use crate::modules::smart_pointer::learn_smart_pointer;
 use crate::modules::static_variables::learn_static_variables;
@@ -23,8 +25,10 @@ use crate::modules::use_unsafe::learn_unsafe;
 mod modules;
 
 fn main() {
-    learn_unsafe();
+    learn_asynchronous();
     if false {
+        learn_marco();
+        learn_unsafe();
         learn_error_handle();
         learn_static_variables();
         learn_thread_send_sync();

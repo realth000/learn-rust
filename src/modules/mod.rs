@@ -1,6 +1,8 @@
+pub mod asynchronous;
 pub mod error_handle;
 pub mod funtional;
 pub mod lifecycle;
+pub mod marco;
 pub mod reference;
 pub mod smart_pointer;
 pub mod static_variables;
