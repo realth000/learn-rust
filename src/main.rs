@@ -1,10 +1,10 @@
-use std::{fmt, io};
 use std::collections::HashMap;
 use std::fmt::{Debug, Display, Formatter};
 use std::fs::File;
 use std::io::{ErrorKind, Read};
 use std::net::IpAddr;
 use std::num::TryFromIntError;
+use std::{fmt, io};
 
 use crate::modules::error_handle::learn_error_handle;
 use crate::modules::funtional::learn_functional;
@@ -18,12 +18,14 @@ use crate::modules::thread_lock::learn_thread_lock;
 use crate::modules::thread_message::learn_thread_message;
 use crate::modules::thread_send_sync::learn_thread_send_sync;
 use crate::modules::types::learn_types;
+use crate::modules::use_unsafe::learn_unsafe;
 
 mod modules;
 
 fn main() {
-    learn_error_handle();
+    learn_unsafe();
     if false {
+        learn_error_handle();
         learn_static_variables();
         learn_thread_send_sync();
         learn_thread_atomic();
@@ -594,7 +596,7 @@ fn learn_trait() {
             author: "a".to_string(),
             content: "c".to_string(),
         }
-            .summarize()
+        .summarize()
     );
     println!(
         "{}",
@@ -602,7 +604,7 @@ fn learn_trait() {
             username: "u".to_string(),
             content: "c".to_string(),
         }
-            .summarize()
+        .summarize()
     );
     // Killer
     pub fn notify(item: &impl Summary) {
@@ -652,7 +654,7 @@ fn learn_trait_2() {
 
 // Generics
 fn learn_generics() {
-    fn add<T: std::ops::Add<Output=T>>(a: T, b: T) -> T {
+    fn add<T: std::ops::Add<Output = T>>(a: T, b: T) -> T {
         a + b
     }
     println!("ADD i8: {}", add(2i8, 3i8));

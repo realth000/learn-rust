@@ -10,3 +10,4 @@ pub mod thread_lock;
 pub mod thread_message;
 pub mod thread_send_sync;
 pub mod types;
+pub mod use_unsafe;
