@@ -1,6 +1,7 @@
 pub mod asynchronous;
 pub mod error_handle;
 pub mod funtional;
+pub mod learn_mod;
 pub mod lifecycle;
 pub mod marco;
 pub mod reference;

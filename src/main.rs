@@ -9,6 +9,7 @@ use std::{fmt, io};
 use crate::modules::asynchronous::learn_asynchronous;
 use crate::modules::error_handle::learn_error_handle;
 use crate::modules::funtional::learn_functional;
+use crate::modules::learn_mod::m1;
 use crate::modules::lifecycle::learn_lifecycle;
 use crate::modules::marco::learn_marco;
 use crate::modules::reference::learn_weak_reference;
@@ -25,8 +26,9 @@ use crate::modules::use_unsafe::learn_unsafe;
 mod modules;
 
 fn main() {
-    learn_asynchronous();
+    m1::m1();
     if false {
+        learn_asynchronous();
         learn_marco();
         learn_unsafe();
         learn_error_handle();
