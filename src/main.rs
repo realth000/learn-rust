@@ -26,10 +26,10 @@ use crate::modules::use_unsafe::learn_unsafe;
 mod modules;
 
 fn main() {
-    m1::m1();
+    learn_marco();
     if false {
+        m1::m1();
         learn_asynchronous();
-        learn_marco();
         learn_unsafe();
         learn_error_handle();
         learn_static_variables();
